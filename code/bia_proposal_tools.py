@@ -39,7 +39,7 @@ def plot_exposures(pointings,Aeff_fact,index=1,lat='00:00:00',lon='260:00:00',Ea
         vec=hp.ang2vec(0,0,lonlat=True)
         i=hp.query_disc(NSIDE,vec,67*np.pi/180.)
         fs[i]=0
-    hp.mollview(fs,title='Sum of All Bia Detectors')
+    hp.mollview(fs,title='Sum of All Detectors')
 #    plot.savefig(biadir+'exposure_maps_'+str(ang)+'.png')
     return sc,fs,exposure_positions,pointings,exposures
 
@@ -66,7 +66,7 @@ def num_detectors(sc,exposure_positions,pointings,antiEarth=False,NSIDE=32):
         i=hp.query_disc(NSIDE,vec,67*np.pi/180.)
         fs_det[i]=0
 
-    hp.mollview(fs_det,title='Overlap of Bia Detectors',cmap=cmap_skewed)
+    hp.mollview(fs_det,title='Overlap of Detectors',cmap=cmap_skewed)
 
     return fs_det
 
@@ -111,4 +111,20 @@ def random_sky(n=1):
 
     ra,dec=thetaphi2radec(theta,phi)
 
+    if len(ra)==1:
+        ra=ra[0]
+        dec=dec[0]
+
     return ra,dec
+
+def separation(ra1,dec1,ra2,dec2):
+
+    rra1=np.radians(ra1)
+    rra2=np.radians(ra2)
+    rdec1=np.radians(dec1)
+    rdec2=np.radians(dec2)
+
+#    sep=np.degrees(np.sqrt(2-2.*np.cos(rra1-rra2)-2.*np.sin(rra1)*np.sin(rra2)*(np.cos(rdec1-rdec2)-1.)))
+    sep=np.degrees(np.arccos(np.sin(rdec1)*np.sin(rdec2)+np.cos(rdec1)*np.cos(rdec2)*np.cos(rra2-rra1)))
+ 
+    return sep
