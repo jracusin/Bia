@@ -46,11 +46,11 @@ def plot_exposures(pointings,Aeff_fact,index=1,lat='00:00:00',lon='260:00:00',Ea
 #    plot.savefig(biadir+'exposure_maps_'+str(ang)+'.png')
     return sc,fs,exposure_positions,pointings,exposures
 
-def num_detectors(sc,exposure_positions,pointings,antiEarth=False,NSIDE=32,Earth=True):
+def num_detectors(sc,exposure_positions,pointings,antiEarth=False,NSIDE=32,Earth=True,fov=60.):
 
     npointings=len(pointings)
     ## evaluate detector overlap
-    exposures = np.array([[ detector.exposure(position[0],position[1], alt=-23.,fov=60.,index=0) for position in exposure_positions.T] 
+    exposures = np.array([[ detector.exposure(position[0],position[1], alt=-23.,fov=fov,index=0) for position in exposure_positions.T] 
                           for detector in sc.detectors])
 
     plot.figure(figsize=(20,npointings))
